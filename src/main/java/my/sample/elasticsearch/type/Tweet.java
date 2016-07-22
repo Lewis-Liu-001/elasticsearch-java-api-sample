@@ -1,4 +1,4 @@
-package my.sample.elasticsearch;
+package my.sample.elasticsearch.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,5 +1,7 @@
 package my.sample.elasticsearch;
 
+import my.sample.elasticsearch.util.EsUtil;
+import my.sample.elasticsearch.util.JsonGenerator;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
@@ -13,19 +15,19 @@ public class IndexApiSample {
             IndexResponse indexResponse = client.prepareIndex("twitter", "tweet", "1")
                 .setSource(JsonGenerator.generateJsonString())
                 .get();
-
             EsUtil.printIndexResponse(indexResponse);
 
             // document の id を省略すると、id は自動で付与されて追加
             indexResponse = client.prepareIndex("twitter", "tweet")
                 .setSource(JsonGenerator.generateJsonStringByHelper())
                 .get();
-
             EsUtil.printIndexResponse(indexResponse);
 
-            // id を指定して削除
-            DeleteResponse deleteResponse = client.prepareDelete("twitter", "tweet", "1").get();
-            EsUtil.printDeleteResponse(deleteResponse);
+            // ネストした document
+            indexResponse = client.prepareIndex("sample", "parent", "parent-uuid-1")
+                .setSource(JsonGenerator.generateNestedJsonArray())
+                .get();
+            EsUtil.printIndexResponse(indexResponse);
 
         } catch (Exception e) {
             e.printStackTrace();

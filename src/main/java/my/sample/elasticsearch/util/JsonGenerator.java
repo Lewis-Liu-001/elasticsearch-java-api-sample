@@ -1,13 +1,14 @@
-package my.sample.elasticsearch;
+package my.sample.elasticsearch.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import my.sample.elasticsearch.type.Child;
+import my.sample.elasticsearch.type.Parent;
+import my.sample.elasticsearch.type.Tweet;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
@@ -56,6 +57,20 @@ public class JsonGenerator {
 
         // generate json
         byte[] jsonArray = mapper.writeValueAsBytes(new Tweet("eve", new Date(), "trying out Elasticsearch"));
+
+        return jsonArray;
+    }
+
+    public static byte[] generateNestedJsonArray() throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper(); // create once, reuse
+
+        List<Child> children = new ArrayList<>();
+        children.add(new Child("child-uuid-1", "child-1", "チャイルド1の説明"));
+        children.add(new Child("child-uuid-2", "child-2", "チャイルド2の説明"));
+        children.add(new Child("child-uuid-3", "child-3", "チャイルド3の説明"));
+
+        byte[] jsonArray = mapper.writeValueAsBytes(new Parent("parent-uuid-1", "parent-1", "ペアレント1の説明", children));
 
         return jsonArray;
     }

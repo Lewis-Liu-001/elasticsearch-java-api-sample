@@ -1,4 +1,4 @@
-package my.sample.elasticsearch;
+package my.sample.elasticsearch.util;
 
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
@@ -30,20 +30,23 @@ public class EsUtil {
 
     public static void printIndexResponse(IndexResponse response) {
 
-        System.out.println("index: " + response.getIndex());
-        System.out.println("type: " + response.getType());
-        System.out.println("id: " + response.getId());
-        System.out.println("version: " + response.getVersion());
+        System.out.println("----");
+        System.out.println("_index: " + response.getIndex());
+        System.out.println("_type: " + response.getType());
+        System.out.println("_id: " + response.getId());
+        System.out.println("_version: " + response.getVersion());
         System.out.println("created: " + response.isCreated());
     }
 
 
     public static void printGetResponse(GetResponse response) {
 
-        System.out.println("index: " + response.getIndex());
-        System.out.println("type: " + response.getType());
-        System.out.println("id: " + response.getId());
-        System.out.println("version: " + response.getVersion());
+
+        System.out.println("----");
+        System.out.println("_index: " + response.getIndex());
+        System.out.println("_type: " + response.getType());
+        System.out.println("_id: " + response.getId());
+        System.out.println("_version: " + response.getVersion());
         System.out.println("exists: " + response.isExists());
 
         Map<String, Object> source = response.getSource();
@@ -55,10 +58,11 @@ public class EsUtil {
 
     public static void printDeleteResponse(DeleteResponse response) {
 
-        System.out.println("index: " + response.getIndex());
-        System.out.println("type: " + response.getType());
-        System.out.println("id: " + response.getId());
-        System.out.println("version: " + response.getVersion());
+        System.out.println("----");
+        System.out.println("_index: " + response.getIndex());
+        System.out.println("_type: " + response.getType());
+        System.out.println("_id: " + response.getId());
+        System.out.println("_version: " + response.getVersion());
         System.out.println("found: " + response.isFound());
 
     }
