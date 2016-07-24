@@ -3,6 +3,7 @@ package my.sample.elasticsearch.util;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -66,4 +67,16 @@ public class EsUtil {
         System.out.println("found: " + response.isFound());
 
     }
+
+    public static void printUpdateResponse(UpdateResponse response) {
+
+        System.out.println("----");
+        System.out.println("_index: " + response.getIndex());
+        System.out.println("_type: " + response.getType());
+        System.out.println("_id: " + response.getId());
+        System.out.println("_version: " + response.getVersion());
+        System.out.println("created: " + response.isCreated());
+
+    }
+
 }
