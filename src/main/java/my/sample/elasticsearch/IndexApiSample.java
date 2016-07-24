@@ -2,7 +2,6 @@ package my.sample.elasticsearch;
 
 import my.sample.elasticsearch.util.EsUtil;
 import my.sample.elasticsearch.util.JsonGenerator;
-import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
