@@ -3,6 +3,7 @@ package my.sample.elasticsearch;
 import my.sample.elasticsearch.util.EsUtil;
 import my.sample.elasticsearch.util.JsonGenerator;
 import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
 
@@ -27,6 +28,12 @@ public class IndexApiSample {
             indexResponse = client.prepareIndex("sample", "parent", "parent-uuid-1")
                 .setSource(JsonGenerator.generateNestedJsonArray())
                 .get();
+            EsUtil.printIndexResponse(indexResponse);
+
+            // IndexRequest を利用
+            IndexRequest indexRequest = new IndexRequest("twitter", "tweet", "2");
+            indexRequest.source(JsonGenerator.generateJsonMap());
+            indexResponse = client.index(indexRequest).get();
             EsUtil.printIndexResponse(indexResponse);
 
         } catch (Exception e) {
