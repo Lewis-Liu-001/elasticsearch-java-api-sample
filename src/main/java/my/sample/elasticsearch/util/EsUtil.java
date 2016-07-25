@@ -2,6 +2,8 @@ package my.sample.elasticsearch.util;
 
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.get.MultiGetItemResponse;
+import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
@@ -76,6 +78,25 @@ public class EsUtil {
         System.out.println("_id: " + response.getId());
         System.out.println("_version: " + response.getVersion());
         System.out.println("created: " + response.isCreated());
+
+    }
+
+    public static void printMultiGetResponse(MultiGetResponse responses) {
+
+        for (MultiGetItemResponse itemResponse : responses) {
+
+            // 対象のインデックスが存在しない場合、
+            // MultiGetItemResponse#getResponse は null を返す
+            if (itemResponse.isFailed()) {
+                System.out.println(itemResponse.getFailure().getFailure().toString());
+            } else {
+                GetResponse response = itemResponse.getResponse();
+                if (response.isExists()) {
+                    String json = response.getSourceAsString();
+                    System.out.println(json);
+                }
+            }
+        }
 
     }
 
