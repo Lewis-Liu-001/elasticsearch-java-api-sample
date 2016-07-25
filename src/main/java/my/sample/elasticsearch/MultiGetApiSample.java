@@ -12,7 +12,7 @@ public class MultiGetApiSample {
         try (Client client = EsUtil.clientBuilder()) {
 
             // 準備
-            // TODO:複数の index を 作成/削除する場合は Bulk API を使用すること
+            // TODO:複数の index を 追加/削除する場合は Bulk API を使用すること
             client.index(new IndexRequest("twitter", "tweet", "1").source(JsonGenerator.generateJsonString()));
             client.index(new IndexRequest("twitter", "tweet", "2").source(JsonGenerator.generateJsonStringByHelper()));
             client.index(new IndexRequest("twitter", "tweet", "3").source(JsonGenerator.generateJsonMap()));
