@@ -26,7 +26,7 @@ public class BulkApiSample {
             bulkRequest.add(new IndexRequest("twitter", "tweet", "2").source(JsonGenerator.generateJsonStringByHelper()));
             bulkRequest.add(new IndexRequest("twitter", "tweet", "3").source(JsonGenerator.generateJsonMap()));
             bulkRequest.add(new IndexRequest("twitter", "tweet", "4").source(JsonGenerator.generateJsonArray()));
-            bulkRequest.add(new IndexRequest("sample", "parent", "parent-uuid-1").source(JsonGenerator.generateNestedJsonArray()));
+            bulkRequest.add(new IndexRequest("nested", "parent", "parent-uuid-1").source(JsonGenerator.generateNestedJsonArray(1)));
 
             // Client#index を用いても可能
             bulkRequest.add(client.prepareIndex("twitter", "tweet", "5")
@@ -55,7 +55,7 @@ public class BulkApiSample {
             // Multi Get API
             MultiGetResponse multiGetItemResponses = client.prepareMultiGet()
                 .add("twitter", "tweet", "1", "2", "3", "4", "5")
-                .add("sample", "parent", "parent-uuid-1")
+                .add("nested", "parent", "parent-uuid-1")
                 .get();
 
             EsUtil.printMultiGetResponse(multiGetItemResponses);

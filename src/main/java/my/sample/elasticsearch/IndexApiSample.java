@@ -24,8 +24,8 @@ public class IndexApiSample {
             EsUtil.printIndexResponse(indexResponse);
 
             // ネストした document
-            indexResponse = client.prepareIndex("sample", "parent", "parent-uuid-1")
-                .setSource(JsonGenerator.generateNestedJsonArray())
+            indexResponse = client.prepareIndex("nested", "parent", "parent-uuid-1")
+                .setSource(JsonGenerator.generateNestedJsonArray(1))
                 .get();
             EsUtil.printIndexResponse(indexResponse);
 

@@ -13,8 +13,8 @@ public class DeleteApiSample {
         try (Client client = EsUtil.clientBuilder()) {
 
             // 準備
-            IndexRequest indexRequest1 = new IndexRequest("sample", "parent", "parent-uuid-1");
-            indexRequest1.source(JsonGenerator.generateNestedJsonArray());
+            IndexRequest indexRequest1 = new IndexRequest("nested", "parent", "parent-uuid-1");
+            indexRequest1.source(JsonGenerator.generateNestedJsonArray(1));
             client.index(indexRequest1);
 
             IndexRequest indexRequest2 = new IndexRequest("twitter", "tweet", "1");
@@ -35,7 +35,7 @@ public class DeleteApiSample {
             EsUtil.printDeleteResponse(deleteResponse);
 
             // DeleteRequest を利用
-            DeleteRequest deleteRequest = new DeleteRequest("sample", "parent", "parent-uuid-1");
+            DeleteRequest deleteRequest = new DeleteRequest("nested", "parent", "parent-uuid-1");
             deleteResponse = client.delete(deleteRequest).get();
             EsUtil.printDeleteResponse(deleteResponse);
 

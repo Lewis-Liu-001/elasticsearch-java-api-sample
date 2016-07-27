@@ -13,8 +13,8 @@ public class GetApiSample {
         try (Client client = EsUtil.clientBuilder()) {
 
             // 準備
-            IndexRequest indexRequest1 = new IndexRequest("sample", "parent", "parent-uuid-1");
-            indexRequest1.source(JsonGenerator.generateNestedJsonArray());
+            IndexRequest indexRequest1 = new IndexRequest("nested", "parent", "parent-uuid-1");
+            indexRequest1.source(JsonGenerator.generateNestedJsonArray(1));
             client.index(indexRequest1);
 
             IndexRequest indexRequest2 = new IndexRequest("twitter", "tweet", "1");
@@ -26,7 +26,7 @@ public class GetApiSample {
             Thread.sleep(1000);
 
             // index, type, document の id を指定
-            GetResponse getResponse = client.prepareGet("sample", "parent", "parent-uuid-1").get();
+            GetResponse getResponse = client.prepareGet("nested", "parent", "parent-uuid-1").get();
             EsUtil.printGetResponse(getResponse);
 
             // GetRequest を利用

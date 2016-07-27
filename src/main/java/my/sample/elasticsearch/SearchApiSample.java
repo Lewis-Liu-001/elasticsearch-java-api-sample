@@ -1,21 +1,10 @@
 package my.sample.elasticsearch;
 
 import my.sample.elasticsearch.util.EsUtil;
-import my.sample.elasticsearch.util.JsonGenerator;
-import org.elasticsearch.action.bulk.BulkItemResponse;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.get.MultiGetResponse;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-
-import java.util.Date;
-
-import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 public class SearchApiSample {
     public static void main(String[] args) {
@@ -23,26 +12,10 @@ public class SearchApiSample {
         try (Client client = EsUtil.clientBuilder()) {
 
             // 準備
-            BulkRequestBuilder bulkRequest = client.prepareBulk();
-            bulkRequest.add(new IndexRequest("twitter", "tweet", "1").source(JsonGenerator.generateJsonString()));
-            bulkRequest.add(new IndexRequest("twitter", "tweet", "2").source(JsonGenerator.generateJsonStringByHelper()));
-            bulkRequest.add(new IndexRequest("twitter", "tweet", "3").source(JsonGenerator.generateJsonMap()));
-            bulkRequest.add(new IndexRequest("twitter", "tweet", "4").source(JsonGenerator.generateJsonArray()));
-            bulkRequest.add(new IndexRequest("sample", "parent", "parent-uuid-1").source(JsonGenerator.generateNestedJsonArray()));
-            BulkResponse bulkResponse = bulkRequest.get();
-
-            // 確認
-            if (bulkResponse.hasFailures()) {
-                // process failures by iterating through each bulk response item
-                for (BulkItemResponse response : bulkResponse.getItems()) {
-                    if (response.isFailed()) {
-                        System.out.println(response.getFailure().getMessage());
-                    }
-                }
-            }
+            EsUtil.prepareIndex(client);
 
             // Search API
-            SearchResponse searchResponse = client.prepareSearch("twitter", "sample") // index
+            SearchResponse searchResponse = client.prepareSearch("twitter", "nested") // index
                 .setTypes("tweet", "parent") // type
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.termQuery("message", "elasticsearch"))                 // Query

@@ -61,17 +61,29 @@ public class JsonGenerator {
         return jsonArray;
     }
 
-    public static byte[] generateNestedJsonArray() throws JsonProcessingException {
+    public static byte[] generateNestedJsonArray(int parentId) throws JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 
         List<Child> children = new ArrayList<>();
-        children.add(new Child("child-uuid-1", "child-1", "チャイルド1の説明"));
-        children.add(new Child("child-uuid-2", "child-2", "チャイルド2の説明"));
-        children.add(new Child("child-uuid-3", "child-3", "チャイルド3の説明"));
 
-        byte[] jsonArray = mapper.writeValueAsBytes(new Parent("parent-uuid-1", "parent-1", "ペアレント1の説明", children));
+        for (int i = parentId; i < parentId + 3; i++) {
+            children.add(
+                new Child(
+                    "child-uuid-" + Integer.toString(i),
+                    "child-" + Integer.toString(i),
+                    "チャイルド" + Integer.toString(i) + "の説明")
+            );
+        }
+
+        byte[] jsonArray = mapper.writeValueAsBytes(
+            new Parent("parent-uuid-" + Integer.toString(parentId),
+                "parent-" + Integer.toString(parentId),
+                "ペアレント" + Integer.toString(parentId) + "の説明",
+                children
+            ));
 
         return jsonArray;
     }
+
 }

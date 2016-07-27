@@ -17,12 +17,12 @@ public class MultiGetApiSample {
             client.index(new IndexRequest("twitter", "tweet", "2").source(JsonGenerator.generateJsonStringByHelper()));
             client.index(new IndexRequest("twitter", "tweet", "3").source(JsonGenerator.generateJsonMap()));
             client.index(new IndexRequest("twitter", "tweet", "4").source(JsonGenerator.generateJsonArray()));
-            client.index(new IndexRequest("sample", "parent", "parent-uuid-1").source(JsonGenerator.generateNestedJsonArray()));
+            client.index(new IndexRequest("nested", "parent", "parent-uuid-1").source(JsonGenerator.generateNestedJsonArray(1)));
 
             MultiGetResponse multiGetItemResponses = client.prepareMultiGet()
                 .add("twitter", "tweet", "1")
                 .add("twitter", "tweet", "2", "3", "4")
-                .add("sample", "parent", "parent-uuid-1")
+                .add("nested", "parent", "parent-uuid-1")
                 .get();
 
             // 対象の index が存在しない場合、

@@ -10,8 +10,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Child implements Serializable{
+
     private static final long serialVersionUID = 3322042096842229962L;
     private String id;
     private String name;
     private String description;
+
 }
