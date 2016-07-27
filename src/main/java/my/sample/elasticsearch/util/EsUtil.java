@@ -5,10 +5,12 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.search.SearchHit;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -83,6 +85,7 @@ public class EsUtil {
 
     public static void printMultiGetResponse(MultiGetResponse responses) {
 
+        System.out.println("----");
         for (MultiGetItemResponse itemResponse : responses) {
 
             // 対象のインデックスが存在しない場合、
@@ -96,6 +99,15 @@ public class EsUtil {
                     System.out.println(json);
                 }
             }
+        }
+
+    }
+
+    public static void printSearchResponse(SearchResponse response) {
+
+        System.out.println("----");
+        for (SearchHit searchHit : response.getHits().hits()) {
+            System.out.println(searchHit.getSource());
         }
 
     }
