@@ -5,6 +5,7 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
@@ -41,6 +42,8 @@ public class EsUtil {
         System.out.println("_id: " + response.getId());
         System.out.println("_version: " + response.getVersion());
         System.out.println("created: " + response.isCreated());
+        System.out.println("");
+
     }
 
 
@@ -58,6 +61,7 @@ public class EsUtil {
         for (String key : source.keySet()) {
             System.out.println(key + ": " + source.get(key));
         }
+        System.out.println("");
 
     }
 
@@ -69,6 +73,7 @@ public class EsUtil {
         System.out.println("_id: " + response.getId());
         System.out.println("_version: " + response.getVersion());
         System.out.println("found: " + response.isFound());
+        System.out.println("");
 
     }
 
@@ -80,6 +85,7 @@ public class EsUtil {
         System.out.println("_id: " + response.getId());
         System.out.println("_version: " + response.getVersion());
         System.out.println("created: " + response.isCreated());
+        System.out.println("");
 
     }
 
@@ -100,6 +106,7 @@ public class EsUtil {
                 }
             }
         }
+        System.out.println("");
 
     }
 
@@ -108,6 +115,19 @@ public class EsUtil {
         System.out.println("----");
         for (SearchHit searchHit : response.getHits().hits()) {
             System.out.println(searchHit.getSource());
+        }
+        System.out.println("");
+
+    }
+
+    public static void printMultiSearchResponse(MultiSearchResponse response) {
+
+        int count = 1;
+        for (MultiSearchResponse.Item item : response.getResponses()) {
+            SearchResponse searchResponse = item.getResponse();
+            System.out.println("hit: " + Integer.toString(count));
+            printSearchResponse(searchResponse);
+            count++;
         }
 
     }
