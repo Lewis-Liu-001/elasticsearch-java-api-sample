@@ -13,7 +13,9 @@ import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -41,9 +43,22 @@ public class EsUtil {
 
     public static void prepareIndex(Client client) {
 
-        // index が既に存在していると IndexAlreadyExistsException がスローされるため、削除
-        client.admin().indices().prepareDelete("nested", "twitter").get();
-        client.admin().indices().prepareCreate("nested")
+
+        IndicesAdminClient adminClient = client.admin().indices();
+
+        // index が既に存在していると作成した際に IndexAlreadyExistsException がスローされるため、削除
+        if (adminClient.prepareExists("nested").get().isExists()) {
+            adminClient.prepareDelete("nested").get();
+        }
+
+        if (adminClient.prepareExists("twitter").get().isExists()) {
+            adminClient.prepareDelete("twitter").get();
+        }
+
+        adminClient.prepareCreate("nested")
+            .setSettings(Settings.builder()
+                .put("index.number_of_shards", 1)     // default 5
+                .put("index.number_of_replicas", 0))  // default 1 このままだと Cluster Health が  Yellow になる
             .addMapping("parent", "{\n" +
                 "    \"parent\": {\n" +
                 "      \"properties\": {\n" +
@@ -53,6 +68,11 @@ public class EsUtil {
                 "      }\n" +
                 "    }\n" +
                 "  }")
+            .get();
+        adminClient.prepareCreate("twitter")
+            .setSettings(Settings.builder()
+                .put("index.number_of_shards", 1)     // default 5
+                .put("index.number_of_replicas", 0))  // default 1 このままだと Cluster Health が  Yellow になる
             .get();
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
@@ -80,7 +100,7 @@ public class EsUtil {
         }
 
         // Refresh
-        client.admin().indices().prepareRefresh().get();
+        adminClient.prepareRefresh().get();
     }
 
     public static SearchResponse executeSearch(Client client, QueryBuilder qb) {

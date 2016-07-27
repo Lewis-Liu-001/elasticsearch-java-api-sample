@@ -61,8 +61,9 @@ public class QueryDslSample {
             // Nested Query
             qb = QueryBuilders.nestedQuery(
                 "children",
-                QueryBuilders.boolQuery().
-                    must(QueryBuilders.matchQuery("children.name", "child-5")));
+                QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchQuery("children.name", "child-5")))
+                .scoreMode("avg");
             EsUtil.printQueryDsl(qb);
             EsUtil.printSearchResponse(EsUtil.executeSearch(client, qb));
         } catch (Exception e) {
